@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import ErrorHandler from "../utils/ErrorHandler";
 
 // Export the error-handling middleware as a default export or named export
-const ErrorMiddleware = (
+export const ErrorMiddleware = (
     err: any, 
     req: Request, 
     res: Response, 
@@ -43,5 +43,4 @@ const ErrorMiddleware = (
     });
 };
 
-// Export the middleware
-export default ErrorMiddleware;
+
