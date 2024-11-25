@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",                  // Use the latest ECMAScript standard
+      "module": "NodeNext",               // Use Node.js's module system (ESM)
+      "moduleResolution": "NodeNext",     // Use Node.js-style module resolution
+      "strict": true,                     // Enable strict type-checking options
+      "esModuleInterop": true,            // Allow default imports from CommonJS modules
+      "outDir": "./dist",                 // Output directory for compiled JS files
+      "skipLibCheck": true                // Skip type checking of declaration files
+    },
+    "include": ["./**/*.ts"],             // Include all TypeScript files in the project
+    "exclude": ["node_modules"]           // Exclude node_modules from the compilation
+  }
+  
