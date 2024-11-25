@@ -6,7 +6,7 @@ import ErrorHandler from "../utils/ErrorHandler";
 
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import jwt, {Secret} from "jsonwebtoken";
-
+import ejs from "ejs";
 require("dotenv").config();
 
 // register user
@@ -33,6 +33,12 @@ export const registrationUser = CatchAsyncError(async(req: Request, res: Respons
         };
 
         const activationToken = createActivationToken(user);
+
+        const activationCode = activationToken.activationCode;
+
+        const data = {user: {name:user.name}, activationCode};
+
+        const html = await ejs.renderFile()
     } catch (error:any) {
         return next(new ErrorHandler(error.message, 400))
         
