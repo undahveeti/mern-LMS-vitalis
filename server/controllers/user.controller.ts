@@ -181,4 +181,14 @@ export const logoutUser = CatchAsyncError(async(req: Request, res: Response, nex
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 400));
     }
-})
+});
+
+// validate user role
+export const authorizeRoles = (...roles: string[]) => {
+    return (req: Request, res: Response, next: NExtFunction) => {
+        if(!roles.includes(req.user?.role || '')){
+            return next(new ErrorHandler(`Role: ${req.user?.role} is not allowed to access this resource`, 403));
+        }
+        next();
+    }
+}
