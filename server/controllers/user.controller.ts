@@ -84,45 +84,49 @@ export const createActivationToken = (user: any): IActivationToken => {
 }
 
 // activate user
+// activate user
 interface IActivationRequest {
     activation_token: string;
     activation_code: string;
-
 }
 
-export const activateUser = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
+export const activateUser = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const {activation_token, activation_code} = req.body as IActivationRequest;
-        
-        const newUser = {user: IUser; activationCode: string} = jwt.verify(
+        const { activation_token, activation_code } = req.body as IActivationRequest;
+
+        // Verify the token and extract the payload
+        const newUser = jwt.verify(
             activation_token,
             process.env.ACTIVATION_SECRET as string
-        ) as {user: IUser; activationCode: string};
+        ) as { user: IUser; activationCode: string };
 
-        if(newUser.activationCode !== activation_code){
+        // Check if the activation code matches
+        if (newUser.activationCode !== activation_code) {
             return next(new ErrorHandler("Invalid activation code", 400));
         }
 
-        const {name, email, password} = newUser.user;
+        const { name, email, password } = newUser.user;
 
-        const existUser = await userModel.findOne({email});
+        // Check if the email already exists
+        const existUser = await userModel.findOne({ email });
 
-        if(existUser){
-            return next(new ErrorHandler("Email already exist", 400));
-
+        if (existUser) {
+            return next(new ErrorHandler("Email already exists", 400));
         }
 
+        // Create a new user in the database
         const user = await userModel.create({
             name,
             email,
             password,
-        })
+        });
 
+        // Respond with success
         res.status(201).json({
             success: true,
+            message: "User activated successfully!",
         });
-        
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 400));
     }
-})
+});
