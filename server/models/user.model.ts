@@ -7,6 +7,7 @@ const emailRegexPattern: RegExp = /^[^\s@]+@[^\s@]+\.[^s@]+$/;
 require('dotenv').config();
 
 export interface IUser extends Document {
+    _id: string;
     name: string;
     email: string;
     password: string;
