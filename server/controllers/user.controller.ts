@@ -165,6 +165,8 @@ export const loginUser = CatchAsyncError(async (req: Request, res: Response, nex
     }
 });
 
+// logout user 
+
 export const logoutUser = CatchAsyncError(async(req: Request, res: Response, next: Function) => {
     try {
         res.cookie("access_token", "", {maxAge: 1});
