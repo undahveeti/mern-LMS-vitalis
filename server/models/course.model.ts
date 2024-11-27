@@ -125,7 +125,7 @@ const courseSchema = new Schema<ICourse>({
         required: true,
     },
     benefits: [{title: String}],
-    prerequisites: [{title: String}];
+    prerequisites: [{title: String}],
     reviews: [reviewSchema],
     courseData: [courseDataSchema],
     ratings: {
