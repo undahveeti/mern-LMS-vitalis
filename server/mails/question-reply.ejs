@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Reply Notification</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .email-wrapper {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .email-header {
+            background-color: #264178;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        .email-body {
+            padding: 20px;
+        }
+        .email-body p {
+            margin: 0 0 10px;
+            line-height: 1.6;
+        }
+        .email-footer {
+            background-color: #f5f5f5;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+        .button {
+            display: inline-block;
+            background-color: #264178;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #1e3561;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="email-header">
+            <h1>New Reply Added to Your Question</h1>
+        </div>
+        <div class="email-body">
+            <p>Dear <%= userName %>,</p>
+            <p>We are excited to inform you that a new reply has been added to your question on the video titled <strong><%= title %></strong>.</p>
+            <p>Please log in to our website to view the reply and continue the discussion. Your participation helps make our community thrive!</p>
+            <a href="<%= loginUrl %>" class="button">View Reply</a>
+            <p>Thank you for being part of this community!</p>
+        </div>
+        <div class="email-footer">
+            <p>&copy; <%= currentYear %> Vitalis Solutions. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
