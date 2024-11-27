@@ -193,7 +193,13 @@ export const addQuestion = CatchAsyncError(async(req: Request, res: Response, ne
 
         courseContent.questions.push(newQuestion);
 
+        // save updated course
 
+        await course?.save();
+        res.status(200).json({
+            success: true,
+            course,
+        });
 
     }catch (error:any) {
         return next(new ErrorHandler(error.message, 500));
