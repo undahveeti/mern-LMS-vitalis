@@ -71,6 +71,8 @@ export const getSingleCourse = CatchAsyncError(async (req: Request, res: Respons
 
         const isCacheExist = await redis.get(courseId);
 
+        console.log('hitting redis');
+
         if(isCacheExist){
             const course = JSON.parse(isCacheExist);
             res.status(200).json({
@@ -81,6 +83,8 @@ export const getSingleCourse = CatchAsyncError(async (req: Request, res: Respons
         else {
 
             const course = await CourseModel.findById(req.params.id).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
+
+            console.log('hitting mongodb');
 
             await redis.set(courseId, JSON.stringify(course));
 
@@ -98,12 +102,29 @@ export const getSingleCourse = CatchAsyncError(async (req: Request, res: Respons
 // access to all
 export const getAllCourses = CatchAsyncError(async (req: Request, res: Response, next:NextFunction) => {
     try {
-        const courses = await CourseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
 
-        res.status(200).json({
-            success: true,
-            courses
-        });
+        const isCacheExist = await redis.get("allCourses");
+
+        console.log('hitting redis');
+
+        if (isCacheExist) {
+            const courses = JSON.parse(isCacheExist);
+            res.status(200).json({
+                success: true,
+                courses
+            });
+        } else {
+            const courses = await CourseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
+
+            console.log('hitting mongodb');
+            
+            await redis.set("allCourses", JSON.stringify(courses));
+
+            res.status(200).json({
+                success: true,
+                courses
+            });
+        }
 
     } catch (error:any) {
         return next(new ErrorHandler(error.message, 500));
