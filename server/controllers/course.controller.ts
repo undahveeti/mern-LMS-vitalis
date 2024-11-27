@@ -322,6 +322,10 @@ export const addReview =  CatchAsyncError(async(req: Request, res: Response, nex
 
         const {review,rating} = req.body as IAddReviewData;
 
+        if (typeof rating !== 'number' || rating < 0 || rating > 5) {
+            return next(new ErrorHandler("Invalid rating value. It must be a number between 0 and 5.", 400));
+        }
+        
         const reviewData:any = {
             user:req.user,
             comment: review,
@@ -337,11 +341,21 @@ export const addReview =  CatchAsyncError(async(req: Request, res: Response, nex
             avg += rev.ratings;
         });
         
-        if(course){
-            course.ratings = avg / course.reviews.length; // one example: 9 / 2 = 4.5
+        if (course) {
+            let avg = 0;
+        
+            // Filter out reviews with invalid ratings
+            const validReviews = course.reviews.filter((rev: any) => typeof rev.rating === 'number');
+        
+            validReviews.forEach((rev: any) => {
+                avg += rev.rating;
+            });
+        
+            // Avoid division by zero
+            course.ratings = validReviews.length > 0 ? avg / validReviews.length : 0;
+        
+            await course.save();
         }
-
-        await course?.save();
 
         const notification = {
             title: "New Review Recieved",
