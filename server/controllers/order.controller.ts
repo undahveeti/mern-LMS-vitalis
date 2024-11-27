@@ -11,6 +11,8 @@ import ejs from "ejs";
 import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notificationModel";
 import userModel from "../models/user.model";
+import { newOrder } from "../services/order.service";
+import mongoose from "mongoose";
 
 // create order
 export const createOrder = CatchAsyncError(async(req:Request,res: Response, next:NextFunction)=>{
@@ -39,6 +41,17 @@ export const createOrder = CatchAsyncError(async(req:Request,res: Response, next
             userId: user?._id,
         };
 
+        newOrder(data,res,next);
+
+        const mailData = {
+            order: {
+                _id: (course._id as mongoose.Types.ObjectId).toString().slice(0, 6), // Uses `slice` assuming `ObjectId` converts to a string
+                name: course.name,
+                price: course.price,
+                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+            },
+        };
+        
 
 
     } catch (error: any){
