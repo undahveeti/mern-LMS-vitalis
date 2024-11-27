@@ -256,6 +256,10 @@ export const addAnswer = CatchAsyncError(async(req: Request, res: Response, next
 
         if(req.user?._id === question.user._id){
             // create a notifcation
+            res.status(200).json({
+                success: true,
+                message: "Updated reply, but no email",
+            });
 
         } 
         else {
@@ -273,6 +277,11 @@ export const addAnswer = CatchAsyncError(async(req: Request, res: Response, next
                     subject: "Question Reply",
                     template: "question-reply.ejs",
                     data,
+                });
+
+                res.status(200).json({
+                    success: true,
+                    message: "Email sent successfully",
                 });
 
             }   catch (error:any) {
