@@ -137,7 +137,7 @@ export const getCourseByUser = CatchAsyncError(async (req: Request, res: Respons
         const userCourseList = await req.user?.courses;
         const courseId = req.params.id;
 
-        const courseExists = userCourseList.find((course:any) => course._id.toString() === courseId);
+        const courseExists = userCourseList?.find((course:any) => course._id.toString() === courseId);
 
         if(!courseExists){
             return next(new ErrorHandler("You are not eligible to access this course", 404));
