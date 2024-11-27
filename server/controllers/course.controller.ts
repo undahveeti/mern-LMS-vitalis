@@ -4,6 +4,7 @@ import cloudinary from "cloudinary";
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import { createCourse } from "../services/course.service";
 import CourseModel from "../models/course.model";
+import { redis } from "../utils/redis";
 
 // upload course
 export const uploadCourse = CatchAsyncError(async (req: Request, res: Response, next:NextFunction) => {
@@ -65,6 +66,19 @@ export const editCourse = CatchAsyncError(async (req: Request, res: Response, ne
 
 export const getSingleCourse = CatchAsyncError(async (req: Request, res: Response, next:NextFunction) => {
     try {
+
+        const courseId = req.params.id;
+
+        const isCacheExist = await redis.get(courseId);
+
+        if(isCacheExist){
+            const course = JSON.parse(isCacheExist);
+            res.status(200).json({
+                success: true,
+                course
+            })
+        }
+
         const course = await CourseModel.findById(req.params.id).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
 
         res.status(200).json({
