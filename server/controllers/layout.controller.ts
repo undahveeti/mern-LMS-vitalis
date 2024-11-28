@@ -103,7 +103,9 @@ export const editLayout = CatchAsyncError(async(req:Request,res:Response, next:N
         }
         if(type === 'FAQ'){
             const {faq} = req.body;
+
             const FaqItem = await LayoutModel.findOne({type: "FAQ"});
+
             const faqItems = await Promise.all(
                 faq.map(async(item:any) => {
                     return {
@@ -111,11 +113,14 @@ export const editLayout = CatchAsyncError(async(req:Request,res:Response, next:N
                         answer: item.answer,
                     };
                 })
-            )
+            );
             await LayoutModel.findByIdAndUpdate(FaqItem?._id,{type:"FAQ", faq:faqItems});
         }
         if(type === 'Categories'){
             const {categories} = req.body;
+
+            const categoriesData = await LayoutModel.findOne({type: "Categories"});
+
             const categoriesItems = await Promise.all(
                 categories.map(async(item:any) => {
                     return {
@@ -123,12 +128,12 @@ export const editLayout = CatchAsyncError(async(req:Request,res:Response, next:N
                     };
                 })
             )
-            await LayoutModel.create({type:"Categories", categories: categoriesItems});
+            await LayoutModel.findByIdAndUpdate(categoriesData?._id,{type:"Categories", categories: categoriesItems});
         }
 
         res.status(200).json({
             success: true,
-            message: "Layout created successfully"
+            message: "Layout updated successfully"
         });
 
 
