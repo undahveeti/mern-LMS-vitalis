@@ -2,7 +2,7 @@ import NotificationModel from "../models/notificationModel";
 import { NextFunction, Response, Request } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
-
+import cron from "node-cron";
 
 // get all notifs -- only for admin
 export const getNotifications = CatchAsyncError(async (req: Request, res: Response, next: NextFunction)=> {
@@ -46,4 +46,11 @@ export const updateNotification =  CatchAsyncError(async (req: Request, res: Res
     } catch (error:any){
         return next(new ErrorHandler(error.message, 500));
     }
+})
+
+// delte notification -- only admin
+// after 5 seconds
+cron.schedule("*/5 * * * * *", function(){
+    console.log("--------------");
+    console.log("running cron");
 })
