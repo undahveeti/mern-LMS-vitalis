@@ -17,7 +17,7 @@ export async function generateLast12MonthsData<T extends Document> (
     currentDate.setDate(currentDate.getDate() + 1);
 
     // it will go back (28 * 12) days ago (reverse because we need 12 months data)
-    for(let i = 11; i != 0; i--){
+    for(let i = 11; i >= 0; i--){
 
         // The end of the 28-day period. It's calculated by subtracting i * 28 days from the current date.
         const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - i * 28);
