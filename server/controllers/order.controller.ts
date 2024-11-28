@@ -63,11 +63,6 @@ export const createOrder = CatchAsyncError(async(req:Request,res: Response, next
 
                 });
 
-                res.status(200).json({
-                    success: true,
-                    message: "Email sent successfully",
-                });
-
             }
         } catch(error:any){
             return next(new ErrorHandler(error.message, 500));

@@ -90,11 +90,11 @@
             <div class="email-header">
                 <h1>Order Confirmation</h1>
             </div>
-            <div class="email-body">
-                <p>Dear <%= user.name %>,</p>
+            <div class="email-body"> 
                 <p>Thank you for your purchase! Your order has been successfully placed.</p>
                 <p><strong>Order Details:</strong></p>
-                <ul>
+                <ul style ="color: #264178">
+                    <li><strong>Order Name:</strong><%= order.name %></li>
                     <li><strong>Order ID:</strong> <%= order._id %></li>
                     <li><strong>Order Date:</strong> <%= order.date %></li>
                     <li><strong>Total Price:</strong> $<%= order.price %></li>
