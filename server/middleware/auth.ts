@@ -18,10 +18,11 @@ export const isAuthenticated = CatchAsyncError(async(req: Request, res:Response,
         return next(new ErrorHandler("acess token is not valid", 400));
     }
 
+    // redis cache the user for fast access to website
     const user = await redis.get(decoded.id);
 
     if(!user) {
-        return next (new ErrorHandler("user not found", 400));
+        return next (new ErrorHandler("Please login to acces this resource", 400));
     }
 
     req.user = JSON.parse(user);
