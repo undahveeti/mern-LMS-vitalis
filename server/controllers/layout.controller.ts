@@ -103,6 +103,7 @@ export const editLayout = CatchAsyncError(async(req:Request,res:Response, next:N
         }
         if(type === 'FAQ'){
             const {faq} = req.body;
+            const FaqItem = await LayoutModel.findOne({type: "FAQ"});
             const faqItems = await Promise.all(
                 faq.map(async(item:any) => {
                     return {
@@ -111,7 +112,7 @@ export const editLayout = CatchAsyncError(async(req:Request,res:Response, next:N
                     };
                 })
             )
-            await LayoutModel.create({type:"FAQ", faq:faqItems});
+            await LayoutModel.findByIdAndUpdate(FaqItem?._id,{type:"FAQ", faq:faqItems});
         }
         if(type === 'Categories'){
             const {categories} = req.body;
