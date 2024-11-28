@@ -79,7 +79,14 @@ export const createOrder = CatchAsyncError(async(req:Request,res: Response, next
             message: `You have a new order from ${course?.name}`,
         });
 
-        newOrder(data,res,next);
+        if(course.purchased){
+            // change purchase numbers on course
+            course.purchased += 1
+        }
+
+        await course.save(); 
+        
+        newOrder(data,res,next);;
 
     } catch (error: any){
         return next(new ErrorHandler(error.message, 500));
