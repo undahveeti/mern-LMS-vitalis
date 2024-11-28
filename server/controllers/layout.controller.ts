@@ -9,7 +9,7 @@ import cloudinary from "cloudinary";
 export const createLayout = CatchAsyncError(async(req:Request,res:Response, next:NextFunction)=>{
     try {
         const {type} = req.body;
-        
+
         const isTypeExist = await LayoutModel.findOne({type});
 
         if(isTypeExist){
@@ -46,16 +46,17 @@ export const createLayout = CatchAsyncError(async(req:Request,res:Response, next
             )
             await LayoutModel.create({type:"FAQ", faq:faqItems});
         }
-        if(type === "Categories"){
+        if(type === 'Categories'){
             const {categories} = req.body;
-
-            await LayoutModel.create(categories);
+            const categoriesItems = await Promise.all(
+                categories.map(async(item:any) => {
+                    return {
+                        title: item.title,
+                    };
+                })
+            )
+            await LayoutModel.create({type:"Categories", categories: categoriesItems});
         }
-
-        res.status(200).json({
-            success: true,
-            message: "Layout created successfully",
-        });
 
 
     }catch (error:any) {
