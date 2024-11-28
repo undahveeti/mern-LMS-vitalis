@@ -98,7 +98,7 @@ export const editLayout = CatchAsyncError(async(req:Request,res:Response, next:N
                 subTitle
             }
 
-            await LayoutModel.findByIdAndUpdate(bannerData.id,{banner});
+            await LayoutModel.findByIdAndUpdate(bannerData._id,{banner});
             
         }
         if(type === 'FAQ'){
@@ -141,3 +141,20 @@ export const editLayout = CatchAsyncError(async(req:Request,res:Response, next:N
         return next(new ErrorHandler(error.message, 400));
     }
 });
+
+// get layout by type 
+
+export const getLayoutByType = CatchAsyncError(async(req:Request,res:Response, next:NextFunction)=>{
+    try {
+        
+        const {type} = req.body;
+        const layout = await LayoutModel.findOne({type});
+
+        res.status(201).json({
+            sucess: true,
+            layout,
+        });
+    } catch (error: any){
+        return next(new ErrorHandler(error.message, 400));
+    }
+})
