@@ -51,7 +51,7 @@ export const createOrder = CatchAsyncError(async(req:Request,res: Response, next
             },
         };
 
-        const html = await ejs.renderFile(path.join(__dirname,'..mails/order-confirmation.ejs'), {order:mailData});
+        const html = await ejs.renderFile(path.join(__dirname,'../mails/order-confirmation.ejs'), {order:mailData});
 
         try {
             if(user){
