@@ -92,7 +92,8 @@ export const getSingleCourse = CatchAsyncError(async (req: Request, res: Respons
 
             console.log('hitting mongodb');
 
-            await redis.set(courseId, JSON.stringify(course));
+            // course visitation for frequent views / will expire in 7 days
+            await redis.set(courseId, JSON.stringify(course), 'EX', 604800);
 
             res.status(200).json({
                 success: true,
