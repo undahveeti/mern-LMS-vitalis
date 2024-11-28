@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Order Confirmation</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style type="text/css">
+            /* Base Styles */
+            body {
+                margin: 0;
+                padding: 0;
+                min-width: 100%;
+                font-family: 'Helvetica Neue', Arial, sans-serif;
+                font-size: 16px;
+                line-height: 1.6;
+                background-color: #f4f7fa;
+                color: #333333;
+            }
+
+            a {
+                color: #264178;
+                text-decoration: none;
+            }
+
+            h1 {
+                font-size: 26px;
+                font-weight: bold;
+                line-height: 1.4;
+                margin: 0 0 20px;
+                text-align: center;
+                color: #ffffff;
+            }
+
+            p {
+                margin: 0 0 20px;
+                font-size: 16px;
+                line-height: 1.6;
+                color: #555555;
+            }
+
+            table td {
+                vertical-align: top;
+            }
+
+            /* Layout Styles */
+            .email-wrapper {
+                background-color: #264178;
+                padding: 20px;
+                color: #ffffff;
+                border-radius: 10px 10px 0 0;
+            }
+
+            .email-body {
+                padding: 20px 25px;
+                background-color: #ffffff;
+                border-radius: 0 0 10px 10px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .email-footer {
+                background-color: #f9f9f9;
+                padding: 20px;
+                border-top: 1px solid #eeeeee;
+                text-align: center;
+                font-size: 14px;
+                color: #777777;
+            }
+
+            .button {
+                display: inline-block;
+                background-color: #264178;
+                color: #ffffff;
+                font-size: 16px;
+                font-weight: bold;
+                text-align: center;
+                text-decoration: none;
+                padding: 12px 30px;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+
+            .button:hover {
+                background-color: #1d335b;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="email-wrapper">
+            <div class="email-header">
+                <h1>Order Confirmation</h1>
+            </div>
+            <div class="email-body">
+                <p>Dear <%= user.name %>,</p>
+                <p>Thank you for your purchase! Your order has been successfully placed.</p>
+                <p><strong>Order Details:</strong></p>
+                <ul>
+                    <li><strong>Order ID:</strong> <%= order._id %></li>
+                    <li><strong>Order Date:</strong> <%= order.date %></li>
+                    <li><strong>Total Price:</strong> $<%= order.price %></li>
+                </ul>
+                <p>You can log in to your account to view more details about your order.</p>
+                <p>Thank you for choosing Vitalis Solutions Group!</p>
+            </div>
+            <div class="email-footer">
+                <p>If you have any questions, feel free to contact us at <a href="mailto:VitalisSolutionsGroup@gmail.com">VitalisSolutionsGroup@gmail.com</a></p>
+
+            </div>
+        </div>
+    </body>
+</html>

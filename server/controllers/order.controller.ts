@@ -51,6 +51,9 @@ export const createOrder = CatchAsyncError(async(req:Request,res: Response, next
                 date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
             },
         };
+
+        const html = await ejs.renderFile(path.join(__dirname,'..mails/order-confirmation.ejs'), mailData);
+
         
 
 
