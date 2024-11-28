@@ -30,6 +30,7 @@ const tailwindConfig = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        customBlue: "#264178",
       },
     },
   },
