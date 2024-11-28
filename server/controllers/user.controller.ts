@@ -394,4 +394,4 @@ export const updateProfilePicture = CatchAsyncError(async(req: Request, res: Res
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 400));
     }
-})
+});

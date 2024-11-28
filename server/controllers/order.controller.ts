@@ -39,9 +39,8 @@ export const createOrder = CatchAsyncError(async(req:Request,res: Response, next
         const data:any = {
             courseId: course._id,
             userId: user?._id,
+            payment_info,
         };
-
-        newOrder(data,res,next);
 
         const mailData = {
             order: {
@@ -85,11 +84,7 @@ export const createOrder = CatchAsyncError(async(req:Request,res: Response, next
             message: `You have a new order from ${course?.name}`,
         });
 
-        res.status(201).json({
-            success: true,
-            order: course,
-        });
-
+        newOrder(data,res,next);
 
     } catch (error: any){
         return next(new ErrorHandler(error.message, 500));
