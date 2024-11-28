@@ -55,7 +55,7 @@ cron.schedule("0 0 0 * * *", async() => {
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
     // deletes notifications that are 30 days old (every midnight)
-    await NotificationModel.deleteMany({status:"read",createdAt: {$lt: thirtyDaysAgo}})
+    await NotificationModel.deleteMany({status:"read",createdAt: {$lt: thirtyDaysAgo}});
 
-
-})
+    console.log('Deleted read notifications');
+});
