@@ -9,6 +9,13 @@ import cloudinary from "cloudinary";
 export const createLayout = CatchAsyncError(async(req:Request,res:Response, next:NextFunction)=>{
     try {
         const {type} = req.body;
+        
+        const isTypeExist = await LayoutModel.findOne({type});
+
+        if(isTypeExist){
+            return next(new ErrorHandler(`${type} already exist`, 400));
+        }
+
         if(type === "Banner"){
             const {image, title, subTitle} = req.body;
 
@@ -29,8 +36,15 @@ export const createLayout = CatchAsyncError(async(req:Request,res:Response, next
         }
         if(type === 'FAQ'){
             const {faq} = req.body;
-            
-            await LayoutModel.create(faq);
+            const faqItems = await Promise.all(
+                faq.map(async(item:any) => {
+                    return {
+                        question: item.question,
+                        answer: item.answer,
+                    };
+                })
+            )
+            await LayoutModel.create({type:"FAQ", faq:faqItems});
         }
         if(type === "Categories"){
             const {categories} = req.body;
@@ -43,7 +57,7 @@ export const createLayout = CatchAsyncError(async(req:Request,res:Response, next
             message: "Layout created successfully",
         });
 
-        
+
     }catch (error:any) {
         return next(new ErrorHandler(error.message, 400));
     }
