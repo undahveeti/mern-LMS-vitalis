@@ -45,16 +45,39 @@ export const createOrder = CatchAsyncError(async(req:Request,res: Response, next
 
         const mailData = {
             order: {
-                _id: (course._id as mongoose.Types.ObjectId).toString().slice(0, 6), // Uses `slice` assuming `ObjectId` converts to a string
+                _id: course._id.toString().slice(0, 6), // Uses `slice` assuming `ObjectId` converts to a string
                 name: course.name,
                 price: course.price,
                 date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
             },
         };
 
-        const html = await ejs.renderFile(path.join(__dirname,'..mails/order-confirmation.ejs'), mailData);
+        const html = await ejs.renderFile(path.join(__dirname,'..mails/order-confirmation.ejs'), {order:mailData});
 
-        
+        try {
+            if(user){
+                await sendMail({
+                    email: user.email,
+                    subject: "Order Confirmation",
+                    template:"order-confirmation.ejs",
+                    data: mailData,
+
+                });
+
+                res.status(200).json({
+                    success: true,
+                    message: "Email sent successfully",
+                });
+
+            }
+        } catch(error:any){
+            return next(new ErrorHandler(error.message, 500));
+        }
+
+        // Push course ID into user's courses array
+        user?.courses.push({ courseId: course._id.toString() });
+
+        await user?.save();
 
 
     } catch (error: any){
