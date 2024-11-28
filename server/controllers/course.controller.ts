@@ -263,10 +263,11 @@ export const addAnswer = CatchAsyncError(async(req: Request, res: Response, next
 
         if(req.user?._id === question.user._id){
             // create a notifcation
-            res.status(200).json({
-                success: true,
-                message: "Updated reply, but no email",
-            });
+            await NotificationModel.create({
+                user: req.user?._id,
+                title: "New Question Reply Recieved",
+                message: `You have a new question reply in ${courseContent.title}`,
+            })
 
         } 
         else {
