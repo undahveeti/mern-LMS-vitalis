@@ -58,6 +58,12 @@ export const createLayout = CatchAsyncError(async(req:Request,res:Response, next
             await LayoutModel.create({type:"Categories", categories: categoriesItems});
         }
 
+        res.status(200).json({
+            success: true,
+            message: "Layout created successfully"
+        });
+
+
 
     }catch (error:any) {
         return next(new ErrorHandler(error.message, 400));
