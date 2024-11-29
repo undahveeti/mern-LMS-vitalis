@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link';
 import React, {FC, useState} from 'react'
+import NavItems from '../utils/NavItems';
 
 type Props = {
     open: boolean;
@@ -50,6 +51,11 @@ const Header:FC<Props> = (props) => {
                         className = {`text-[25px] font-Poppins font-[500] text-black dark:text-white`}>
                             Vitalis Solutions Group
                         </Link>
+                    </div>
+                    <div className="flex items-center">
+                        <NavItems
+                        activeItem={activeItem}
+                        isMobile = {false} />
                     </div>
                 </div>
             </div>
