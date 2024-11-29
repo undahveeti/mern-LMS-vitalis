@@ -26,8 +26,7 @@ export const ThemeSwitcher = () => {
                     className="cursor-pointer"
                     size={25}
                     onClick={() => setTheme("light")}/>
-                )
-            }
+                )}
             
         </div>
     )
