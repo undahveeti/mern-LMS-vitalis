@@ -9,7 +9,7 @@ type Props = {
     activeItem: number;
 }
 
-const Header:FC<Props> = (props) => {
+const Header:FC<Props> = ({activeItem}) => {
 
    const [active, setActive] = useState(false);
    const [openSidebar, setOpenSidebar] = useState(false);
