@@ -5,12 +5,16 @@ import {BiMoon, BiSun} from "react-icons/bi";
 
 export const ThemeSwitcher = () => {
     
-    const [mounted,setMounted] = useState(false);
+    const [mounted,setMounted] = useState(false); // tracks if component is mounted
     const {theme, setTheme} = useTheme();
     useEffect(() => setMounted(true), []);
     
+    useEffect(() => {
+        setMounted(true); // Sets mounted to true after the component is mounted
+      }, []);
+
     if(!mounted){
-        return null
+        return null // prevents rendering until the component is mounted
     }
     return (
         <div className = "flex items-center justify-center mx-4">
