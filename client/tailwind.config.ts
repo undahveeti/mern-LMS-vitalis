@@ -7,7 +7,7 @@ const tailwindConfig = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    darkMode:["class"],
+    darkMode: 'class',
     extend: {
       fontFamily:{
          Poppins: ["var(--font-Poppins)"],

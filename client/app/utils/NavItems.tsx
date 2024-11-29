@@ -40,7 +40,7 @@ const NavItems : React.FC<Props>= ({activeItem,isMobile}) => {
         <div className = "hidden 800px:flex">
             {
                 navItemsData && navItemsData.map((i,index) => (
-                    <Link href={`{i.url}`} key={index} passHref>
+                    <Link href={`${i.url}`} key={index} passHref>
                         <span 
                         className={`${
                             activeItem === index
@@ -61,7 +61,7 @@ const NavItems : React.FC<Props>= ({activeItem,isMobile}) => {
                     <div className = "w-full text-center py-6">
                     {
                         navItemsData && navItemsData.map((i,index) => (
-                            <Link href={`{i.url}`} key={index} passHref>
+                            <Link href={`${i.url}`} key={index} passHref>
                                 <span 
                                 className={`${
                                     activeItem===index
