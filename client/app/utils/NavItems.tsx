@@ -1,3 +1,5 @@
+'use client'
+
 import Link from "next/link";
 import React from "react";
 
@@ -54,7 +56,7 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile }) => {
             <Link href={"/"} passHref>
               <span
                 className={`text-[25px] font-Poppins font-[500] text-black dark:text-white`}
-              >ELearning</span>
+              >Vitalis Solutions Group</span>
             </Link>
           </div>
             {navItemsData &&
