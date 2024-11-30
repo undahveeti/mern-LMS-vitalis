@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link';
-import React, {FC, useState, useEffect} from 'react'
+import React, {FC, useState} from 'react'
 import NavItems from '../utils/NavItems';
 import {ThemeSwitcher} from '../utils/ThemeSwitcher';
 
@@ -16,18 +16,25 @@ const Header:FC<Props> = ({activeItem}) => {
    const [openSidebar, setOpenSidebar] = useState(false);
 
    // might have to use useEffect for scroll instead of attaching event listener directly, ensures that listener is cleaned up when compoennts unmount and avoids memory leaks
-    // scroll behavior applying active styles
-   useEffect(() => {
+
+   /* useEffect(() => {
     const handleScroll = () => {
-      setActive(window.scrollY > 85);
+      if (window.scrollY > 80) {
+        setActive(true);
+      } else {
+        setActive(false);
+      }
     };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  */
+   if(typeof window !== "undefined"){
+    window.addEventListener("scroll", () => {
+        if(window.scrollY > 85){
+            setActive(true)
+        } else {
+            setActive(false);
+        }
+    })
+   }
 
   // when user scrolled: Applies a semi-transparent background in dark mode, Creates a gradient background in dark mode, fixes header to top of screen, sets w and h, ensures header appears on top w z, animates style chantge over 500ms
   // when no scroll, no changes no fixed positioning 
@@ -50,7 +57,6 @@ const Header:FC<Props> = ({activeItem}) => {
                         <NavItems
                         activeItem={activeItem}
                         isMobile = {false} />
-                        <ThemeSwitcher/>
                     </div>
                 </div>
             </div>
