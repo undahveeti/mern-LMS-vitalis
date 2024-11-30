@@ -53,6 +53,33 @@ const Verification : FC<Props> = ({setRoute}) => {
         <h1 className={`${styles.title}`}>
             Verify Your Account
         </h1>
+        <br />
+        <div className = "w-full flex items-center justify-center mt-2">
+            <div className="w-[80px] h-[80px] rounded-full bg-[#497DF2] flex items-center justify-center">
+            <VscWorkspaceTrusted size={40} />
+            </div>
+        </div>
+        <br />
+      <br />
+      <div className="m-auto flex items-center justify-around">
+        {Object.keys(verifyNumber).map((key,index)=> (
+            <input type="text"
+            key={key}
+            ref={inputRefs[index]}
+            className={`w-[65px] h-[65px] bg-transparent border-[3px] rounded-[10px] flex items-center text-black dark:text-white justify-center text-[18px] font-Poppins outline-none text-center ${
+                invalidError
+                  ? "shake border-red-500"
+                  : "dark:border-white border-[#0000004a]"
+              }`}
+           placeholder=""
+           maxLength={1}
+           value={verifyNumber[key as keyof VerifyNumber]}   
+           onChange={(e) => handleInputChange(index, e.target.value)}
+        />
+        ))}
+      </div>
+      <br />
+      <br />
     </div>
   )
 };
