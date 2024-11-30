@@ -15,6 +15,8 @@ type Props = {
 const Header: FC<Props> = ({ activeItem, setOpen }) => {
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  
 
   // Handle scroll to apply "active" state
   useEffect(() => {
