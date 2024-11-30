@@ -30,7 +30,7 @@ const Verification : FC<Props> = ({setRoute}) => {
         3: "",
       });
 
-    const verificationHandler = async = () => {
+    const verificationHandler = async () => {
         console.log('test');
     }
 
