@@ -28,12 +28,15 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
     const handleScroll = () => {
       setActive(window.scrollY > 85);
     };
-
+  
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  
+  
 
   // Close sidebar when clicking outside
   const handleClose = (e: any) => {
