@@ -25,13 +25,25 @@ export const authApi = apiSlice.injectEndpoints({
                     dispatch(
                         userRegistration({
                             token: result.data.activationToken,
-                            
-                        })
-                    )
-                } catch (error:any) {
 
+                        })
+                    );
+                } catch (error:any) {
+                    console.log(error);
                 }
             }
-        })
-    })
-})
+        }),
+        activation: builder.mutation({
+            query: ({activation_token, activation_code}) => ({
+                url:"activate-user",
+                method:"POST",
+                body:{
+                    activation_token,
+                    activation_code                
+                },
+            }),
+        }),
+    }),
+});
+
+export const {useRegisterMutation, useActivationMutation} = authApi;
