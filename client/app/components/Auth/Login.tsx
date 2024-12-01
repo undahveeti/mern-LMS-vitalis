@@ -1,16 +1,20 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
   AiOutlineEye,
-  AiOutlineEyeInvisible,
-  AiFillGithub,
+  AiOutlineEyeInvisible
 } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
 
 type Props = {
   setRoute: (route: string) => void;
+  setOpen: (open: boolean) => void;
 };
 
 const schema = Yup.object().shape({
@@ -20,16 +24,40 @@ const schema = Yup.object().shape({
   password: Yup.string().required("Please enter your password!").min(8),
 });
 
-const Login: FC<Props> = ({ setRoute }) => {
+const Login: FC<Props> = ({ setRoute, setOpen }) => {
   const [show, setShow] = useState(false);
+  const [login, { isSuccess, error }] = useLoginMutation();
 
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: schema,
     onSubmit: async ({ email, password }) => {
-      console.log(email, password);
+      await login({ email, password });
     },
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Login Successfully!");
+      setOpen(false);
+    }
+
+    if (error) {
+      // Handle FetchBaseQueryError or SerializedError
+      if ("status" in error) {
+        const fetchError = error as FetchBaseQueryError;
+        if (fetchError.data && typeof fetchError.data === "object") {
+          const errorMessage = (fetchError.data as { message: string }).message;
+          toast.error(errorMessage); // Show error from the backend
+        } else {
+          toast.error("An unknown backend error occurred.");
+        }
+      } else if ("message" in error) {
+        const clientError = error as SerializedError;
+        toast.error(clientError.message || "An unexpected error occurred.");
+      }
+    }
+  }, [isSuccess, error, setOpen]);
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
   return (
