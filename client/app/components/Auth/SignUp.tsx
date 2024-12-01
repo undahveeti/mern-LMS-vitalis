@@ -26,36 +26,33 @@ const schema = Yup.object().shape({
 
 const SignUp: FC<Props> = ({ setRoute }) => {
   const [show, setShow] = useState(false);
-  const [register,{data,error,isSuccess}] = useRegisterMutation(); 
+  const [register, { data, error, isSuccess }] = useRegisterMutation();
 
   useEffect(() => {
-   if(isSuccess){
+    if (isSuccess) {
       const message = data?.message || "Registration successful";
       toast.success(message);
       setRoute("Verification");
-   }
-   if (error) {
-    if ((error as FetchBaseQueryError)?.data) {
-      const errorData = error as FetchBaseQueryError;
-      if (errorData.data && typeof errorData.data === "object") {
-        const errorMessage = (errorData.data as { message: string }).message;
-        toast.error(errorMessage);
-      }
-    } else {
-      toast.error("An unexpected error occurred.");
     }
-  }
-  }, []);
-  
+
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as FetchBaseQueryError;
+        if (errorData.data && typeof errorData.data === "object") {
+          const errorMessage = (errorData.data as { message: string }).message;
+          toast.error(errorMessage); // Show error from backend
+        }
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
+    }
+  }, [isSuccess, error, data, setRoute]);
 
   const formik = useFormik({
     initialValues: { name: "", email: "", password: "" },
     validationSchema: schema,
-    onSubmit: async ({name, email, password }) => {
-      const data = {
-        name,email,password
-      };
-      await register(data);
+    onSubmit: async (values) => {
+      await register(values); // Directly pass the form values
     },
   });
 
