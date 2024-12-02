@@ -113,7 +113,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
               {user ? (
                 <Link href={"/profile"}>
                   <Image
-                    src={user.avatar || avatar.src} // Use avatar.src for fallback
+                    src={user.avatar ? user.avatar.url : avatar.src} // Use avatar.src for fallback
                     alt="User Avatar"
                     className="w-[30px] h-[30px] rounded-full cursor-pointer"
                     width={30} // Explicit width

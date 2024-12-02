@@ -5,6 +5,7 @@ import { AiOutlineCamera } from "react-icons/ai";
 import avatarIcon from "../../../public/assets/avatar.png";
 import { useUpdateAvatarMutation } from "@/redux/features/user/userApi";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import toast from "react-hot-toast";
 
 type Props = {
   avatar: string | null;
@@ -19,26 +20,31 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
 
   const {} = useLoadUserQuery(undefined, { skip: loadUser ? false : true });
 
-  const imageHandler = async (e: any) => {
-    const fileReader = new FileReader();
+  const imageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
+    const fileReader = new FileReader();
     fileReader.onload = () => {
       if (fileReader.readyState === 2) {
         const avatar = fileReader.result;
-        updateAvatar(avatar,);
+        updateAvatar(avatar); // Assuming backend accepts base64 string
       }
     };
-    fileReader.readAsDataURL(e.target.files[0]);
+    fileReader.readAsDataURL(file);
   };
 
   useEffect(() => {
     if (isSuccess) {
       setLoadUser(true);
+      toast.success("Avatar updated successfully!");
     }
     if (error) {
-      console.log(error);
+      toast.error("Failed to update avatar. Please try again.");
+      console.error("Error updating avatar:", error);
     }
   }, [isSuccess, error]);
+  
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
