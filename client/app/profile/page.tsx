@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import Profile from "../components/Profile/Profile";
 
 type Props = {
-    user: any;
 };
 
 const Page: FC<Props> = (props) => {
