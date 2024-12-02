@@ -12,7 +12,9 @@ import { useSelector } from "react-redux";
 import avatar from "../../public/assets/avatar.png";
 import Image from "next/image";
 import Link from "next/link";
-
+import { useSession } from "next-auth/react";
+import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
 
 type Props = {
   open: boolean;
@@ -25,22 +27,35 @@ type Props = {
 const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
-  const {user} = useSelector((state:any) => state.auth);
+  const { user } = useSelector((state: any) => state.auth);
+  const { data } = useSession();
+  const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
 
   // Handle scroll to apply "active" state
+  useEffect(() => {
+    if (!user) {
+      if (data) {
+        socialAuth({
+          email: data?.user?.email,
+          name: data?.user?.name,
+          avatar: data.user?.image,
+        });
+      }
+    }
+    if(isSuccess){
+      toast.success("Login Successfully");
+    }
+  }, [data, user]);
   useEffect(() => {
     const handleScroll = () => {
       setActive(window.scrollY > 85);
     };
-  
+
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  
-  
 
   // Close sidebar when clicking outside
   const handleClose = (e: any) => {
@@ -82,23 +97,21 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                   onClick={() => setOpenSidebar(true)}
                 />
               </div>
-              {
-                  user ? (
-                    <Link href={"/profile"}>
-                    <Image
-                      src={user.avatar ? user.avatar : avatar}
-                      alt=""
-                      className="w-[30px] h-[30px] rounded-full cursor-pointer"
-                    />
-                    </Link>
-                  ): (
-                    <HiOutlineUserCircle
-                        size={25}
-                        className="hidden 800px:block cursor-pointer dark:text-white text-black"
-                        onClick={() => setOpen(true)}
-                      />
-                )
-              }
+              {user ? (
+                <Link href={"/profile"}>
+                  <Image
+                    src={user.avatar ? user.avatar : avatar}
+                    alt=""
+                    className="w-[30px] h-[30px] rounded-full cursor-pointer"
+                  />
+                </Link>
+              ) : (
+                <HiOutlineUserCircle
+                  size={25}
+                  className="hidden 800px:block cursor-pointer dark:text-white text-black"
+                  onClick={() => setOpen(true)}
+                />
+              )}
             </div>
           </div>
         </div>
