@@ -16,7 +16,6 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 type Props = {
   setRoute: (route: string) => void;
   setOpen: (open: boolean) => void;
-  refetch: () => void;
 };
 
 const schema = Yup.object().shape({
@@ -26,7 +25,7 @@ const schema = Yup.object().shape({
   password: Yup.string().required("Please enter your password!").min(6),
 });
 
-const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
+const Login: FC<Props> = ({ setRoute, setOpen}) => {
   const [show, setShow] = useState(false);
   const [login, { isSuccess, error, reset }] = useLoginMutation(); // Added reset
   const formik = useFormik({
@@ -41,7 +40,6 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
     if (isSuccess) {
       toast.success("Login Successfully!");
       setOpen(false);
-      refetch();
       reset(); // Reset the mutation state after successful login
     }
 
@@ -56,7 +54,7 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
         toast.error("An unexpected error occurred.");
       }
     }
-  }, [isSuccess, error, setOpen, refetch, reset]);
+  }, [isSuccess, error, setOpen, reset]);
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
 

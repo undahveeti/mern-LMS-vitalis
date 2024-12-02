@@ -33,19 +33,23 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
 
   // Handle scroll to apply "active" state
   useEffect(() => {
-    if (!user) {
-      if (data) {
-        socialAuth({
-          email: data?.user?.email,
-          name: data?.user?.name,
-          avatar: data.user?.image,
-        });
-      }
+    console.log("Google Sign-In Data:", data); // Debug data object
+  
+    if (!user && data?.user) {
+      // Check if the avatar is an empty string or undefined and assign a default value
+      const avatarUrl = data.user.image && data.user.image.trim() !== "" ? data.user.image : avatar.src;
+  
+      socialAuth({
+        email: data.user.email || "",
+        name: data.user.name || "",
+        avatar: avatarUrl, // Use the valid avatar or default
+      });
     }
+  
     if (isSuccess) {
       toast.success("Login Successfully");
     }
-  }, [data, user]);
+  }, [data, user, isSuccess, socialAuth]);
   useEffect(() => {
     const handleScroll = () => {
       setActive(window.scrollY > 85);
