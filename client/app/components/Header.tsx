@@ -1,6 +1,4 @@
 "use client";
-
-import Link from "next/link";
 import React, { FC, useState, useEffect } from "react";
 import NavItems from "../utils/NavItems";
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
@@ -9,6 +7,12 @@ import CustomModal from "../utils/CustomModal";
 import Login from "../components/Auth/Login";
 import SignUp from "../components/Auth/SignUp";
 import Verification from "./Auth/Verification";
+import { useSelector } from "react-redux";
+
+import avatar from "../../public/assets/avatar.png";
+import Image from "next/image";
+import Link from "next/link";
+
 
 type Props = {
   open: boolean;
@@ -21,6 +25,7 @@ type Props = {
 const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
+  const {user} = useSelector((state:any) => state.auth);
 
   // Handle scroll to apply "active" state
   useEffect(() => {
@@ -77,11 +82,23 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                   onClick={() => setOpenSidebar(true)}
                 />
               </div>
-              <HiOutlineUserCircle
-                size={25}
-                className="hidden 800px:block cursor-pointer dark:text-white text-black"
-                onClick={() => setOpen(true)}
-              />
+              {
+                  user ? (
+                    <Link href={"/profile"}>
+                    <Image
+                      src={user.avatar ? user.avatar : avatar}
+                      alt=""
+                      className="w-[30px] h-[30px] rounded-full cursor-pointer"
+                    />
+                    </Link>
+                  ): (
+                    <HiOutlineUserCircle
+                        size={25}
+                        className="hidden 800px:block cursor-pointer dark:text-white text-black"
+                        onClick={() => setOpen(true)}
+                      />
+                )
+              }
             </div>
           </div>
         </div>
