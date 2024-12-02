@@ -1,36 +1,34 @@
+"use client";
 import React, { FC, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
   AiOutlineEye,
-  AiOutlineEyeInvisible
+  AiOutlineEyeInvisible,
 } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
-import toast from "react-hot-toast";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { SerializedError } from "@reduxjs/toolkit";
-
-
+import { toast } from "react-hot-toast";
 import { signIn } from "next-auth/react";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 type Props = {
   setRoute: (route: string) => void;
   setOpen: (open: boolean) => void;
+  refetch: () => void;
 };
 
 const schema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email!")
     .required("Please enter your email!"),
-  password: Yup.string().required("Please enter your password!").min(8),
+  password: Yup.string().required("Please enter your password!").min(6),
 });
 
-const Login: FC<Props> = ({ setRoute, setOpen }) => {
+const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
   const [show, setShow] = useState(false);
-  const [login, { isSuccess, error }] = useLoginMutation();
-
+  const [login, { isSuccess, error, reset }] = useLoginMutation(); // Added reset
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: schema,
@@ -43,29 +41,28 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
     if (isSuccess) {
       toast.success("Login Successfully!");
       setOpen(false);
+      refetch();
+      reset(); // Reset the mutation state after successful login
     }
 
     if (error) {
-      // Handle FetchBaseQueryError or SerializedError
+      // Handle FetchBaseQueryError
       if ("status" in error) {
         const fetchError = error as FetchBaseQueryError;
-        if (fetchError.data && typeof fetchError.data === "object") {
-          const errorMessage = (fetchError.data as { message: string }).message;
-          toast.error(errorMessage); // Show error from the backend
-        } else {
-          toast.error("An unknown backend error occurred.");
-        }
-      } else if ("message" in error) {
-        const clientError = error as SerializedError;
-        toast.error(clientError.message || "An unexpected error occurred.");
+        const errorMessage = (fetchError.data as { message?: string })?.message;
+        toast.error(errorMessage || "An error occurred during login.");
+      } else {
+        // Handle unexpected errors
+        toast.error("An unexpected error occurred.");
       }
     }
-  }, [isSuccess, error, setOpen]);
+  }, [isSuccess, error, setOpen, refetch, reset]);
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
+
   return (
     <div className="w-full">
-      <h1 className={`${styles.title}`}>Login with Vitalis</h1>
+      <h1 className={`${styles.title}`}>Login with ELearning</h1>
       <form onSubmit={handleSubmit}>
         <label className={`${styles.label}`} htmlFor="email">
           Enter your Email
@@ -124,12 +121,12 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
           Or join with
         </h5>
         <div className="flex items-center justify-center my-3">
-          <FcGoogle size={30} className="cursor-pointer mr-2" 
+          <FcGoogle size={30} className="cursor-pointer mr-2"
           onClick={() => signIn("google")}
           />
         </div>
         <h5 className="text-center pt-4 font-Poppins text-[14px]">
-          Don't have any account?{" "}
+          Not have any account?{" "}
           <span
             className="text-[#2190ff] pl-1 cursor-pointer"
             onClick={() => setRoute("Sign-Up")}
@@ -138,7 +135,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
           </span>
         </h5>
       </form>
-      <br/>
+      <br />
     </div>
   );
 };
