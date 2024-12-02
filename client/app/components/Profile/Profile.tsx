@@ -40,6 +40,8 @@ const Profile: FC<Props> = ({user}) => {
     });
   }
 
+  console.log("User in Profile:", user);
+
   return (
     <div className="w-[85%] flex mx-auto">
       <div
@@ -55,11 +57,11 @@ const Profile: FC<Props> = ({user}) => {
           logOutHandler={logOutHandler}
         />
     </div>
-    {active === 1 && (
-        <div className="w-full h-full bg-transparent mt-[80px]">
-          <ProfileInfo avatar={avatar} user={user} />
-        </div>
-      )}
+    {active === 1 && user && (
+  <div className="w-full h-full bg-transparent mt-[80px]">
+    <ProfileInfo avatar={avatar} user={user} />
+  </div>
+)}
     </div>
   );
 };

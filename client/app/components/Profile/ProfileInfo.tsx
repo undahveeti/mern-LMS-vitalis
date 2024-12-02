@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { styles } from "../../../app/styles/style";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
 import avatarIcon from "../../../public/assets/avatar.png";
 
@@ -10,7 +10,15 @@ type Props = {
 };
 
 const ProfileInfo: FC<Props> = ({ avatar, user }) => {
-  const [name, setName] = useState(user?.name || "");
+    const [name, setName] = useState(user?.name || "Guest");
+    const [email, setEmail] = useState(user?.email || "No email provided");
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name || "Guest");
+      setEmail(user.email || "No email provided");
+    }
+  }, [user]);
 
   const imageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("Image upload handler triggered");
@@ -21,7 +29,6 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
     console.log("Form submitted with name:", name);
   };
 
-  // Determine the avatar source
   const avatarSrc = user?.avatar?.url || avatar || avatarIcon;
 
   return (
@@ -70,7 +77,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
                 type="text"
                 readOnly
                 className={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
-                value={user?.email}
+                value={email}
               />
             </div>
             <input
