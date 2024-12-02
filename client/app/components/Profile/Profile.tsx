@@ -5,6 +5,7 @@ import React, { FC, useState } from "react";
 import SideBarProfile from './SideBarProfile';
 import { useLogOutQuery } from "@/redux/features/auth/authApi";
 import { signOut } from "next-auth/react";
+import { redirect } from "next/navigation";
 type Props = {
     user: any;
 };
@@ -21,10 +22,11 @@ const Profile: FC<Props> = ({user}) => {
   });
 
   const logOutHandler = async () => {
+    signOut();
     setLogout(true);
-    await signOut();
+    redirect("/");
   };
-  
+
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
       if (window.scrollY > 85) {
