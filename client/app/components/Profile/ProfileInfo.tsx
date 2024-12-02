@@ -3,6 +3,8 @@ import { styles } from "../../../app/styles/style";
 import React, { FC, useState, useEffect } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
 import avatarIcon from "../../../public/assets/avatar.png";
+import { useUpdateAvatarMutation } from "@/redux/features/user/userApi";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 type Props = {
   avatar: string | null;
@@ -10,19 +12,33 @@ type Props = {
 };
 
 const ProfileInfo: FC<Props> = ({ avatar, user }) => {
-    const [name, setName] = useState(user?.name || "Guest");
-    const [email, setEmail] = useState(user?.email || "No email provided");
+  const [name, setName] = useState(user?.name || "Guest");
+  const [email, setEmail] = useState(user?.email || "No email provided");
+  const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
+  const [loadUser, setLoadUser] = useState(false);
+
+  const {} = useLoadUserQuery(undefined, { skip: loadUser ? false : true });
+
+  const imageHandler = async (e: any) => {
+    const fileReader = new FileReader();
+
+    fileReader.onload = () => {
+      if (fileReader.readyState === 2) {
+        const avatar = fileReader.result;
+        updateAvatar(avatar,);
+      }
+    };
+    fileReader.readAsDataURL(e.target.files[0]);
+  };
 
   useEffect(() => {
-    if (user) {
-      setName(user.name || "Guest");
-      setEmail(user.email || "No email provided");
+    if (isSuccess) {
+      setLoadUser(true);
     }
-  }, [user]);
-
-  const imageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("Image upload handler triggered");
-  };
+    if (error) {
+      console.log(error);
+    }
+  }, [isSuccess, error]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
