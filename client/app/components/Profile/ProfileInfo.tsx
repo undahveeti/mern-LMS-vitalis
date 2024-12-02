@@ -10,21 +10,26 @@ type Props = {
 };
 
 const ProfileInfo: FC<Props> = ({ avatar, user }) => {
-  const [name, setName] = useState(user && user.name);
+  const [name, setName] = useState(user?.name || "");
 
-  const imageHandler = async (e: any) => {
-    console.log('gggg');
+  const imageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("Image upload handler triggered");
   };
 
-  const handleSubmit = async (e: any) => {
-    console.log('gggg');
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Form submitted with name:", name);
   };
+
+  // Determine the avatar source
+  const avatarSrc = user?.avatar?.url || avatar || avatarIcon;
+
   return (
     <>
       <div className="w-full flex justify-center">
         <div className="relative">
           <Image
-            src={user.avatar || avatar ? user.avatar.url || avatar : avatarIcon}
+            src={avatarSrc}
             alt="User Avatar"
             width={120}
             height={120}
