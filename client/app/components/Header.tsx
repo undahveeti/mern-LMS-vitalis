@@ -9,12 +9,12 @@ import SignUp from "../components/Auth/SignUp";
 import Verification from "./Auth/Verification";
 import { useSelector } from "react-redux";
 
-import avatar from "../../public/assets/avatar.png";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
+import avatar from "../../public/assets/avatar.png";
 
 type Props = {
   open: boolean;
@@ -42,7 +42,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
         });
       }
     }
-    if(isSuccess){
+    if (isSuccess) {
       toast.success("Login Successfully");
     }
   }, [data, user]);
@@ -100,16 +100,18 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
               {user ? (
                 <Link href={"/profile"}>
                   <Image
-                    src={user.avatar ? user.avatar : avatar}
-                    alt=""
+                    src={user.avatar || avatar.src} // Use avatar.src for fallback
+                    alt="User Avatar"
                     className="w-[30px] h-[30px] rounded-full cursor-pointer"
+                    width={30} // Explicit width
+                    height={30} // Explicit height
                   />
                 </Link>
               ) : (
                 <HiOutlineUserCircle
                   size={25}
                   className="hidden 800px:block cursor-pointer dark:text-white text-black"
-                  onClick={() => setOpen(true)}
+                  onClick={() => setOpen(true)} // Opens the modal when no user is logged in
                 />
               )}
             </div>
