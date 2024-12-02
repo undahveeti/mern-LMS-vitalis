@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { FC } from "react";
 import { BiSearch } from "react-icons/bi";
 
-import BannerImg from "../../../public/assets/banner-img-1.png";
+import BannerImg from "../../../public/assets/banner-img-2.png";
 import Client1 from "../../../public/assets/client-1.jpg";
 import Client2 from "../../../public/assets/client-2.jpg";
 import Client3 from "../../../public/assets/client-3.jpg";
