@@ -12,6 +12,9 @@ import toast from "react-hot-toast";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 
+
+import { signIn } from "next-auth/react";
+
 type Props = {
   setRoute: (route: string) => void;
   setOpen: (open: boolean) => void;
@@ -121,7 +124,9 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
           Or join with
         </h5>
         <div className="flex items-center justify-center my-3">
-          <FcGoogle size={30} className="cursor-pointer mr-2" />
+          <FcGoogle size={30} className="cursor-pointer mr-2" 
+          onClick={() => signIn("google")}
+          />
         </div>
         <h5 className="text-center pt-4 font-Poppins text-[14px]">
           Don't have any account?{" "}
